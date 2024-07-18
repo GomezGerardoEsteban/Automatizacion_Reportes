@@ -1,0 +1,105 @@
+---
+output:
+  word_document:
+    reference_docx: CLEPSO_2024_Formato_ponencia_aceptada.docx
+  pdf_document: default
+---
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(flextable)
+
+dia <- 18
+mes <- "Julio"
+
+base1 <- read_excel("Dictamen_ponencias_David_Eje10 (1).xlsx", sheet = 3)
+base2 <- read_excel("Ponencias CLEPSO 2024.xlsx")
+
+base2 <- base2[base2$`Eje temático` == "10. Estudios socioespaciales, urbanos, medio ambiente y desarrollo", ]
+
+base2 <- base2 %>% 
+  filter(Número != "Expresión Arística 14" & !is.na(Número))
+
+names(base2)[13] <- "correoElectronico"
+names(base2)[16] <- "nombrePosgrado"
+names(base2)[19] <- "institucion"
+names(base2)[3] <- "NombrePonencia"
+
+base1 <- base1 %>% 
+  gather(key = ponencia, value = valor, 3:length(base1))
+
+numeros <- c(1:29)
+
+base2 <- base2 %>% 
+  filter(Número == numeros[i])
+
+```
+
+
+
+\
+Ciudad de México, `r paste(dia, "de", mes)` de 2024.
+
+
+**Estimado (a)**\
+**`r base2$Responsable[1]`**\
+**Correo electrónico:** `r base2$correoElectronico[1]`\
+**Nombre posgrado:** `r base2$nombrePosgrado[1]`\
+**Institución:** `r base2$institucion[1]`\
+
+
+
+El **Comité Organizador** del Congreso Latinoamericano de Estudiantes de Posgrado en Ciencias Sociales - CLEPSO 2024- tiene el **agrado de informarle** que su resumen titulado **"`r base2$NombrePonencia`"**, ha sido **aprobado** para participar en la sexta edición del mismo, el cual se celebrará los días 28, 29 y 30 de agosto del presente de manera híbrida.
+ 
+Asimismo, le recordamos que la fecha límite para la presentación de ponencias completas es el **04 de agosto**, y que las mismas deben enviarse como archivo adjunto al correo [clepso@flacso.edu.mx](clepso@flacso.edu.mx) con el nombre **“CLEPSO.2024_(apellido autores).doc”** (por ejemplo, “CLEPSO.2024_Rojas y Lopez.doc”), para facilitar su edición en formato documento Word (.docx) u Open Office (.odt). El envío de la misma es **obligatorio** para tomar en cuenta su participación en el congreso. Los criterios para el envío de la ponencia completa se encuentran disponibles en nuestra página web [https://clepso.flacso.edu.mx/c%C3%B3mo-participar](https://clepso.flacso.edu.mx/c%C3%B3mo-participar) 
+
+Las ponencias presentadas en CLEPSO serán publicadas en línea previa autorización de los autores. Igualmente, el comité organizador del CLEPSO realizará una selección de los mejores trabajos para ser presentados a la revista RELACSO. La revista enviará estos trabajos a dictaminar, pudiendo ser publicados en la misma.
+
+Sin más, le saludamos cordialmente y quedamos a cualquier inquietud.
+
+Cordialmente,
+
+**Comité Organizador**\
+**Congreso Latinoamericano de Estudiantes de Posgrado en Ciencias Sociales**\
+**Facultad Latinoamericana de Ciencias Sociales - FLACSO México.**\
+
+A continuación, encontrarás los criterios y observaciones que fueron tenidas en cuenta para la evaluación de tu ponencia:
+
+```{r warning=FALSE, message=FALSE, echo=FALSE}
+
+names(base1)[2] <- "Criterio"
+
+base1 <- base1 %>% 
+  filter(ponencia == numeros[i])
+
+tabla <- base1 %>% 
+  select(Criterio, ...1, valor)
+
+tabla <- tabla[c(2:7),]
+
+tabla$valor <- round(as.numeric(tabla$valor), 1)
+
+names(tabla)[2] <- "Puntaje\nasignado"
+names(tabla)[3] <- "Puntaje\nobtenido"
+
+
+ft <- flextable(tabla, cwidth = 2) %>% 
+  bold(part = "header") %>% 
+  set_caption(caption = "Resultados Ponencia") %>% 
+  width(j = c(1,2,3), width = c(3,1,1)) %>% 
+  bold(i = 6)
+
+texto <- data.frame(Observaciones = base1$valor[base1$Criterio == "Observaciones"][1])
+
+
+ft
+```
+
+\
+
+
+**Observaciones**: `r texto$Observaciones[1]`
+
+
