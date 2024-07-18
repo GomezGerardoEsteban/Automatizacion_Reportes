@@ -17,7 +17,7 @@ library(tidyverse)
 library(readxl)
 library(flextable)
 
-base_dictamen <- read_excel("Dictamen_ponencias_David_Eje10 (1).xlsx", sheet = 3)
+base_dictamen <- read_excel("Dictamen_ponencias.xlsx", sheet = 3)
 
 base_dictamen <- base_dictamen %>% 
   gather(key = ponencia, value = valor, 3:length(base_dictamen))
