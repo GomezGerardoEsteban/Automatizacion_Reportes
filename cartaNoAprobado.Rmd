@@ -14,7 +14,7 @@ library(flextable)
 dia <- 18
 mes <- "Julio"
 
-base1 <- read_excel("Dictamen_ponencias_David_Eje10 (1).xlsx", sheet = 3)
+base1 <- read_excel("Dictamen_ponencias.xlsx", sheet = 3)
 base2 <- read_excel("Ponencias CLEPSO 2024.xlsx")
 
 base2 <- base2[base2$`Eje temático` == "10. Estudios socioespaciales, urbanos, medio ambiente y desarrollo", ]
